@@ -1,8 +1,14 @@
 package com.hello.hello_spring.controller;
 
+import com.hello.hello_spring.domain.Member;
 import com.hello.hello_spring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 
 // 컨트롤러 - 서비스 - 리포지토리 (패턴 정형화)
@@ -19,5 +25,28 @@ public class MemberController {
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
+
+    @GetMapping("/members/new")
+    public String createForm() {
+        return "members/createMemberForm";
+    }
+
+    @PostMapping("/members/new")
+    public String create(MemberForm form) {
+        Member member = new Member();
+        member.setName(form.getName());
+
+        System.out.println("member = " + member.getName());
+        memberService.join(member);
+        return "redirect:/"; // 홈화면으로 리다이렉트
+    }
+
+    @GetMapping("/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members); // members list 전체를 모델에 담음
+        return "members/memberList";
+    }
+
 }
 
