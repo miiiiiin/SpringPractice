@@ -5,6 +5,7 @@ import com.hello.hello_spring.Repository.MemoryMemberRepository;
 import com.hello.hello_spring.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 // 순수한 자바 클래스이기 때문에 어노테이션으로 표시. (@Service를 보고 스프링이 스프링 컨테이너에 MemberService를 등록해줌)
 @Service
+@Transactional // 데이터를 저장하고 변경할 때 항상 트랜잭션이 있어야 함. (jpa는 join 시 모든 데이터 변경이 다 트랜잭션 안에서 실행되어야 함)
 public class MemberService {
 
     private final MemberRepository memberRepository;
