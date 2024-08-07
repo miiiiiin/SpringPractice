@@ -1,5 +1,6 @@
 package com.hello.hello_spring;
 
+import aop.TimeTraceAop;
 import com.hello.hello_spring.Repository.JpaMemberRepository;
 import com.hello.hello_spring.Repository.MemberRepository;
 import com.hello.hello_spring.service.MemberService;
@@ -17,6 +18,13 @@ public class SpringConfig {
     public SpringConfig(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
+
+
+    // aop 스프링 빈에 등록 or ComponentScan
+//    @Bean
+//    public TimeTraceAop timeTraceAop() {
+//        return new TimeTraceAop();
+//    }
 
 
     // JPA
