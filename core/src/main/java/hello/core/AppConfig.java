@@ -13,6 +13,7 @@ public class AppConfig {
         return new MemberServiceImpl(new MemoryMemberRepository()); // 생성자 주입
     }
     public OrderService orderService() {
+        // 구현 클래스는 실행에만 집중
         return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
     }
 }

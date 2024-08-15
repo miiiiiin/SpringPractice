@@ -7,15 +7,16 @@ import hello.core.member.MemberServiceImpl;
 
 public class MemberApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
+//        MemberService memberService = new MemberServiceImpl(); // AppConfig 통해서 생성하도록 수정
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
 
         // Long 타입이라서 숫자뒤에 L 붙여줌
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
-;
+
         Member findMember = memberService.findMember(1L);
         System.out.println("new member = " + member.getName());
         System.out.println("findMember = " + findMember.getName());
-
     }
 }
