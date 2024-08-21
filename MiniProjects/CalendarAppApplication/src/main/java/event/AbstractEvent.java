@@ -1,5 +1,6 @@
 package event;
 
+import event.update.AbstractAuditableEvent;
 import exception.InvalidEventException;
 
 import java.time.Duration;
@@ -41,6 +42,30 @@ public abstract class AbstractEvent implements Event {
         this.deletedYn = false; // 삭제가 안된 상태가 기본값 (유효한 상태)
     }
 
+    // AbstractAuditableEvent 전달
+    public void validateAndUpdate(AbstractAuditableEvent update) {
+        if (deletedYn == true) throw new RuntimeException("이미 삭제된 이벤트는 수정할 수 없음.");
+
+        defaultUpdate(update);
+        update(update);
+    }
+
+     // 공통 업데이트
+    public void defaultUpdate(AbstractAuditableEvent update) {
+        this.title = update.getTitle();
+        this.startAt = update.getStartAt();
+        this.endAt = update.getEndAt();
+        this.duration = Duration.between(this.startAt, this.endAt);
+        this.modifiedAt = ZonedDateTime.now();
+    }
+
+    // 개별 업데이트 (각각의 이벤트 타입에 맞게 구현해줘야 함. AbstractEvent 를 상속받은 각각의 구현체에서 구현 해줘야 함.)
+    // protected abstract 메서드로 만들어야 함.
+    protected abstract void update(AbstractAuditableEvent update);
+
+    public void delete(boolean deletedYn) {
+        this.deletedYn = deletedYn;
+    }
     public String getTitle() {
         return this.title;
     }

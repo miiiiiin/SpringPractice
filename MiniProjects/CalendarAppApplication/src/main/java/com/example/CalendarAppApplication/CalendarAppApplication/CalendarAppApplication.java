@@ -1,6 +1,7 @@
 package com.example.CalendarAppApplication.CalendarAppApplication;
 
 import event.*;
+import event.update.UpdateMeeting;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import reader.EventCsvReader;
@@ -52,6 +53,41 @@ public class CalendarAppApplication {
 		List<Meeting> meetings = csvReader.readMeetings(meetingCsvPath);
 		meetings.forEach(schedule::add);
 
-		schedule.printAll();
+		// Meeting 첫번째 데이터 가져옴
+		Meeting meeting = meetings.get(0);
+		meeting.print();
+
+		System.out.println("수정 후...");
+
+		meetings.get(0).validateAndUpdate(
+				new UpdateMeeting(
+						"new title",
+						ZonedDateTime.now(),
+						ZonedDateTime.now().plusHours(1),
+						null,
+						"A",
+						"new agenda"
+				)
+		); // 수정 (Meeting의 첫 번째 데이터에 대해서 이 값들로 업데이트를 하겠다는 의미)
+
+//		schedule.printAll();
+
+		meeting.delete(true);
+
+//		System.out.println("삭제 후 수정 시도...");
+//
+//		meetings.get(0).validateAndUpdate(
+//				new UpdateMeeting(
+//						"new title",
+//						ZonedDateTime.now(),
+//						ZonedDateTime.now().plusHours(1),
+//						null,
+//						"B",
+//						"Deleted agenda"
+//				)
+//		); // 수정 (Meeting의 첫 번째 데이터에 대해서 이 값들로 업데이트를 하겠다는 의미)
+
+
+		meeting.print();
 	}
 }
