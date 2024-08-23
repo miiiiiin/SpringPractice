@@ -17,12 +17,20 @@ import java.util.HashSet;
 import java.util.List;
 
 public class EventCsvReader {
+
+    // 하나의 mocking class로 만드는 것이 목적 (단위 Test 시)
+    private final RawCsvReader rawCsvReader;
+
+    // 생성자 호출될 때 주입시켜줌
+    public EventCsvReader(RawCsvReader rawCsvReader) {
+        this.rawCsvReader = rawCsvReader;
+    }
     public List<Meeting> readMeetings(String path) throws IOException { // csv 경로
         List<Meeting> result = new ArrayList<>();
 
         // 데이터 읽는 부분
         // List는 String 배열을 가지고 있는 데이터
-        List<String[]> read = readAll(path);
+        List<String[]> read = rawCsvReader.readAll(path); // 테스트에서 mocking 처리 예정 (List<String[]>에 해당하는 부분)
 
         for (int i=0; i<read.size(); i++) {
             if (skipHeader(i)) continue; // header skip
@@ -52,10 +60,10 @@ public class EventCsvReader {
         // method로 분리 (option + command + m)
     }
 
-    private List<String[]> readAll(String path) throws IOException {
-        InputStream in = getClass().getResourceAsStream(path);
-        InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-        CSVReader csvReader = new CSVReader(reader);
-        return csvReader.readAll(); // 이 경로로 입력된 데이터에서 csv파일로 변환이 된 다음, 결과값을 리스트 형식으로 반환
-    }
+//    private List<String[]> readAll(String path) throws IOException {
+//        InputStream in = getClass().getResourceAsStream(path);
+//        InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+//        CSVReader csvReader = new CSVReader(reader);
+//        return csvReader.readAll(); // 이 경로로 입력된 데이터에서 csv파일로 변환이 된 다음, 결과값을 리스트 형식으로 반환
+//    }
 }

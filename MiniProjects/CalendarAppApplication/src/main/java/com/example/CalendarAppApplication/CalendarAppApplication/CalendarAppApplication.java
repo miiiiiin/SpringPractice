@@ -5,6 +5,7 @@ import event.update.UpdateMeeting;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import reader.EventCsvReader;
+import reader.RawCsvReader;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -48,7 +49,7 @@ public class CalendarAppApplication {
 
 
 		// 데이터 csv 파일로 만들어 대량으로 등록하기
-		EventCsvReader csvReader = new EventCsvReader();
+		EventCsvReader csvReader = new EventCsvReader(new RawCsvReader());
 		String meetingCsvPath = "/data/meeting.csv";
 		List<Meeting> meetings = csvReader.readMeetings(meetingCsvPath);
 		meetings.forEach(schedule::add);
@@ -62,7 +63,7 @@ public class CalendarAppApplication {
 		meetings.get(0).validateAndUpdate(
 				new UpdateMeeting(
 						"new title",
-						ZonedDateTime.now(),
+						ZonedDateTime.  now(),
 						ZonedDateTime.now().plusHours(1),
 						null,
 						"A",
