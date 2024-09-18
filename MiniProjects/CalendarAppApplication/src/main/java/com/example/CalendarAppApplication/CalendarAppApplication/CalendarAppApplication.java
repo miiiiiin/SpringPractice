@@ -51,8 +51,22 @@ public class CalendarAppApplication {
 		// 데이터 csv 파일로 만들어 대량으로 등록하기
 		EventCsvReader csvReader = new EventCsvReader(new RawCsvReader());
 		String meetingCsvPath = "/data/meeting.csv";
+		String noDisturbanceCsvPath = "/data/no_disturbance.csv";
+		String outofOfficeCsvPath = "/data/out_of_office.csv";
+		String toDoCsvPath = "/data/todo.csv";
+
 		List<Meeting> meetings = csvReader.readMeetings(meetingCsvPath);
 		meetings.forEach(schedule::add);
+
+		List<NoDisturbance> noDisturbances = csvReader.readNoDisturbance(noDisturbanceCsvPath);
+		noDisturbances.forEach(schedule::add);
+
+		List<OutOfOffice> outOfOffices = csvReader.readOutOfOffice(outofOfficeCsvPath);
+		outOfOffices.forEach(schedule::add);
+
+		List<Todo> todos = csvReader.readTodo(toDoCsvPath);
+		todos.forEach(schedule::add);
+
 
 		// Meeting 첫번째 데이터 가져옴
 		Meeting meeting = meetings.get(0);
@@ -71,7 +85,7 @@ public class CalendarAppApplication {
 				)
 		); // 수정 (Meeting의 첫 번째 데이터에 대해서 이 값들로 업데이트를 하겠다는 의미)
 
-//		schedule.printAll();
+		schedule.printAll();
 
 		meeting.delete(true);
 
