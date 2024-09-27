@@ -19,6 +19,13 @@
                     <td>
                         <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}">
                         </a>
+<!--                        답변 개수 표시-->
+<!--                        답변이 있는지 확인 후, 답변 개수 표시
+    ms-2 (왼쪽 여백 추가) -->
+                        <span class="text-danger small ms-2"
+                              th:if="${#lists.size(question.answerList) > 0}"
+                              th:text="${#lists.size(question.answerList)}">
+                        </span>
                  </td>
              <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
