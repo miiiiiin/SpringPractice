@@ -1,11 +1,13 @@
 package com.site.sbb.question;
 
+import com.site.sbb.answer.AnswerForm;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +27,6 @@ public class QuestionController {
     //  questionService 객체도 @RequiredArgsConstructor에 의해 생성자 방식으로 주입됨.
     private final QuestionService questionService;
 
-
     @GetMapping("/list")
 //    @ResponseBody
     public String list(Model model) {
@@ -40,12 +41,42 @@ public class QuestionController {
 
     @GetMapping(value = "/detail/{id}")
     // 변하는 id 값 을 얻을 때에는 @PathVariable 애너테이션을 사용
-    public String detail(Model model, @PathVariable("id") Integer id) {
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question", question);
         return "question_detail";
     }
 
+    @GetMapping("/create")
+    public String questionCreate(QuestionForm questionForm) {
+        return "question_form";
+    }
+
+    /**
+     * subject, content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩
+     * @Valid 애너테이션을 적용 하면 QuestionForm의 @NotEmpty, @Size 등으로 설정한 검증 기능이 동작
+     * BindingResult 매개변수는 @Valid 애너테이션으로 검증이 수행된 결과를 의미하는 객체
+     * BindingResult 매개변수는 항상 @Valid 매개변수 바로 뒤에 위치해야 함.
+     * 만약 두 매개변 수의 위치가 정확하지 않다면 @Valid만 적용되어 입력값 검증 실패 시 400 오류가 발생
+     * @param questionForm
+     * @param bindingResult
+     * @return
+     */
+    @PostMapping("/create")
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+        // 서비스에 질문 데이터 저장
+//        this.questionService.create(subject, content);
+//        return "redirect:/question/list";
+        // 질문 저장 후 질문 목록으로 이동
+
+        if (bindingResult.hasErrors()) {
+            // 오류가 있는 경우에 는 다시 제목과 내용을 작성하는 화면으로 리다이렉팅
+            return "question_form";
+        }
+        // 오류 없을 경우 질문 등록
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+        return "redirect:/question/list";
+    }
 
 
 }

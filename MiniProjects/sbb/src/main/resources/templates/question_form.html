@@ -1,0 +1,30 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+    <form th:action="@{/question/create}" th:object="${questionForm}" method="post">
+<!--        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()-->
+<!--}">-->
+<!--            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
+<!--        </div>-->
+        <!-- 공통 에러 템플릿 적용 (th:replace 속성은 탬플릿 내에 공통 탬플릿 삽입할 수 있음)
+        th:replace 속성에 의해 div 요소의 내용을 form_errors 템플릿으로 대체하라는 의미
+        formErrorsFragment는 앞서 form_errors 템플릿에서 작성한 내용 일부를 가리키는 것
+        -->
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+            <label for="subject" class="form-label">제목</label>
+            <input type="text" th:field="*{subject}" class="form-control">
+<!--            <input type="text" name="subject" id="subject" class="form-control">-->
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+<!--            <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+
+            th:field 속성을 사용하도록 변경. 이렇게 하면 해당 태그의 id, name, value 속성이 모두 자동으로 생성되고
+            타임리프가 value 속성에 기존에 입력된 값 을 채워 넣어 오류가 발생하더라도 기존에 입력한 값이 유지됨. -->
+            <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+        </div>
+        <input type="submit" value="저 장 하 기" class="btn btn-primary my-2">
+    </form>
+</div>
+</html>
