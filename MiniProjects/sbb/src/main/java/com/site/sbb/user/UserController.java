@@ -1,6 +1,5 @@
 package com.site.sbb.user;
 
-import groovy.lang.GString;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -49,5 +48,11 @@ public class UserController {
         return "redirect:/";
     }
 
-
+    // GetMapping 통해 /user/login URL로 들어오는 GET 요청을 아래 메서드가 처리
+    // 실제 로그인을 진행하는 @PostMapping 방식의 메서드는 스프링 시큐리티가 대신 처리
+    @GetMapping("/login")
+    public String login() {
+        // login_form.html 템플릿을 출력
+        return "login_form";
+    }
 }

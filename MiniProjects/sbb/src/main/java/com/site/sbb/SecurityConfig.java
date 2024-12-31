@@ -33,12 +33,16 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
                 .headers((headers) -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
                         XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN
-                )));
+                ))) // formLogin : 스프링 시큐리티의 로그인 설정을 담당하는 부분
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/user/login")
+                        .defaultSuccessUrl("/"));
         return  http.build();
         // 스프링 시큐리티의 CSRF 방어 기능에 의해 H2 콘솔 접근이 거부됨
         // /h2-console/로 시작하는 모든 URL 은 CSRF 검증을 하지 않는다는 설정
         // URL 요청 시 X-Frame-Options 헤더를 DENY 대신 SAMEORIGIN 으로 설정하여 오류가 발 생하지 않도록 처리
         // 236p
+
     }
 
     /**
