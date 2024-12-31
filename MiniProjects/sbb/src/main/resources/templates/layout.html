@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/html">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -34,5 +34,10 @@ fit=no">
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
 <!-- Bootstrap JS 추가한 자바스크립트 (Javascript, JS) 파일을 사용할 수 있도록 설정 -->
 <script th:src="@{/bootstrap.min.js}"></script>
+<!--자바 스크립트 start-->
+<th:block layout:fragment="script"></th:block>
+<!--자바 스크립트 end-->
+<!--layout.html을 상속하는 템플릿들에서 content 블록을 구현하게 했던 것과 마찬가지 방법으로 script블록을구현할수있도록</body>태그바로위에<th:block layout:fragment=" script"></th:block> 블록을 추가-->
+<!-- layout.html을 상속하는 템플릿은 자바스크립트의 삽입 위치를 신경 쓰지 않아도 되고, 필요할 경우에 스크립트 블록을 구현하여 자바스크 립트를 작성할 수 있다.-->
 </body>
 </html>

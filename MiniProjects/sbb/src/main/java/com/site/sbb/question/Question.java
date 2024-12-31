@@ -1,6 +1,7 @@
 package com.site.sbb.question;
 
 import com.site.sbb.answer.Answer;
+import com.site.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,4 +46,12 @@ public class Question {
      */
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
+
+    // 사용자 한 명이 질문을 여러 개 작성할 수 있기 때문
+    @ManyToOne
+    private SiteUser author;
+
+    private LocalDateTime modifyDate;
+
+
 }
