@@ -2,6 +2,8 @@ package com.site.sbb;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,7 +38,12 @@ public class SecurityConfig {
                 ))) // formLogin : 스프링 시큐리티의 로그인 설정을 담당하는 부분
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/"));
+                        .defaultSuccessUrl("/"))
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true));
+                        // .invalidateHttpSession(true)를 통해 로그아웃 시 생성된 사용자 세션도 삭제하도록 처리
         return  http.build();
         // 스프링 시큐리티의 CSRF 방어 기능에 의해 H2 콘솔 접근이 거부됨
         // /h2-console/로 시작하는 모든 URL 은 CSRF 검증을 하지 않는다는 설정
@@ -54,5 +61,15 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * AuthenticationManager 빈 생성 (스프링 시큐리티의 인증을 처리)
+     * 사용자 인증 시 앞에서 작성한 UserSecurityService와
+     * PasswordEncoder를 내부적으로 사용하여 인증과 권한 부여 프로세스를 처리
+     */
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
