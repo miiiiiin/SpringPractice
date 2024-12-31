@@ -20,6 +20,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'junit:junit:4.13.1'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	// 개발 환경에만 적용된다는 의미로, 운영 환경에 배포되는 jar, war 파일에는 이 라이브러리가 포함되지 않는다.

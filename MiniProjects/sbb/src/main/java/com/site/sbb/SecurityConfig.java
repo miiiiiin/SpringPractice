@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -18,6 +20,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 public class SecurityConfig {
 
+    /**
+     * 스프링에의해생성또는관리되는객체를의미한다.
+     * 컨트롤러, 서비스, 리포지터리 등도 모두 빈에 해당한다.
+     */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // 인증되지 않은 모든 페이지 요청 허락한다는 의미 (로그인 필요x)
@@ -33,5 +39,16 @@ public class SecurityConfig {
         // /h2-console/로 시작하는 모든 URL 은 CSRF 검증을 하지 않는다는 설정
         // URL 요청 시 X-Frame-Options 헤더를 DENY 대신 SAMEORIGIN 으로 설정하여 오류가 발 생하지 않도록 처리
         // 236p
+    }
+
+    /**
+     * PasswordEncoder 빈을 만드는 가장 쉬운 방법은
+     * @Configuration이 적용된 SecurityConfig .java 파일에 @Bean 메서드를 새로 추가하는 것
+     * PasswordEncoder 를 @Bean으로 등록하면 UserService.java도 수정 가능
+     * @return
+     */
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
