@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 일반적으로 엔티티를 만들 때에는 Setter 메서드를 사용하지 않기를 권장됨.
@@ -53,5 +54,9 @@ public class Question {
 
     private LocalDateTime modifyDate;
 
-
+    /**
+     *  Set 자료형 이유: voter 속성값 이 서로 중복되지 않도록 하기 위해서
+     */
+    @ManyToMany
+    Set<SiteUser> voter;
 }

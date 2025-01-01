@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,4 +38,9 @@ public class Answer {
     private SiteUser author;
 
     private LocalDateTime modifyDate;
+    /**
+     *  Set 자료형 이유: voter 속성값 이 서로 중복되지 않도록 하기 위해서
+     */
+    @ManyToMany
+    Set<SiteUser> voter;
 }
