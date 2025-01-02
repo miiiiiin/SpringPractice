@@ -37,14 +37,17 @@ public class QuestionController {
 
     @GetMapping("/list")
 //    @ResponseBody
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "kw", defaultValue = "") String kw) {
         // 매개변수로 Model을 지정하면 객체가 자동으로 생성됨
         // Model 객체는 자바 클래스 (Java class) 와 템플릿 (template) 간의 연결 고리 역할
         // Model 객체에 값을 담아두면 템플릿에서 그 값을 사용할 수 있음.
 
-        Page<Question> paging = this.questionService.getList(page);
+        Page<Question> paging = this.questionService.getList(page, kw);
 //        List<Question> questionList = this.questionService.getList();
         model.addAttribute("paging", paging);
+        // 입력한검색어를화면에그대로유지하기위해model.addAttribute("kw", kw )로 kw값을 저장
+        model.addAttribute("kw", kw);
         return "question_list";
     }
 
