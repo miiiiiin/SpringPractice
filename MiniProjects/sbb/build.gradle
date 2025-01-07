@@ -33,13 +33,14 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// thymeleaf 템플릿
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation' //폼 클래스를 사용해 사용자로부터 입력받은 값을 검증
 	// Spring Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	// MARKDOWN
 	implementation 'org.commonmark:commonmark:0.21.0'
+
 }
 
 tasks.named('test') {

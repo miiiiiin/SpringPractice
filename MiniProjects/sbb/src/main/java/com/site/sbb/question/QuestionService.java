@@ -24,9 +24,9 @@ public class QuestionService {
     //  questionRepository 객체는 @RequiredArgsConstructor에 의해 생성자 방식으로 주입됨.
     private final QuestionRepository questionRepository;
 
-    public List<Question> getList() {
-        return this.questionRepository.findAll();
-    }
+//    public List<Question> getList() {
+//        return this.questionRepository.findAll();
+//    }
 
     // 해당 페이지의 데이터만 조회하도록 쿼리가 변경
     // 최신 순으로 정렬하여 데이터 조회
@@ -92,25 +92,44 @@ public class QuestionService {
      * (Question 엔티티와 Answer 엔티티는 answerList 속성으로 연결되어 있어서 q.join(" answerList")와 같이 조인해야 한다. a 객체는 답변 내용을 검색할 때 필요)
      * u2 : a 객체와 다시 한 번 SiteUser 엔티티와 아우터 조인하여 만든 SiteUser 엔티티의 객체로 답변 작성자를 검색할 때 필요
      */
+//    private Specification<Question> search(String kw) {
+//        return new Specification<>() {
+//            private static final long serialVersionUID = 1L;
+//            @Override
+//            public Predicate toPredicate(Root<Question> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
+//                // 중복제거
+//                query.distinct(true);
+//                Join<Question, SiteUser> u1 = q.join("author", JoinType.LEFT);
+//                Join<Question, Answer> a = q.join("answerList", JoinType.LEFT);
+//                Join<Answer, SiteUser> u2 = a.join("author", JoinType.LEFT);
+//
+//                /**
+//                 * like 키워드로 검색하기 위해 제목, 내용, 질문 작성자, 답변 내용, 답변 작성자 각각에 cb.like를 사용하고 최종적으로 cb.or로 OR 검색
+//                 */
+//                return cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
+//                    cb.like(q.get("content"), "%" + kw + "%"), // 내용
+//                    cb.like(u1.get("username"), "%" + kw + "%"), // 질문
+//                    cb.like(a.get("content"), "%" + kw + "%"), // 답변
+//                    cb.like(u2.get("username"), "%" + kw + "%")); // 답변
+//            }
+//        };
+//    }
+    @SuppressWarnings("unused")
     private Specification<Question> search(String kw) {
         return new Specification<>() {
             private static final long serialVersionUID = 1L;
+
             @Override
             public Predicate toPredicate(Root<Question> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                // 중복제거
-                query.distinct(true);
+                query.distinct(true); // 중복을 제거
                 Join<Question, SiteUser> u1 = q.join("author", JoinType.LEFT);
                 Join<Question, Answer> a = q.join("answerList", JoinType.LEFT);
                 Join<Answer, SiteUser> u2 = a.join("author", JoinType.LEFT);
-
-                /**
-                 * like 키워드로 검색하기 위해 제목, 내용, 질문 작성자, 답변 내용, 답변 작성자 각각에 cb.like를 사용하고 최종적으로 cb.or로 OR 검색
-                 */
                 return cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
-                    cb.like(q.get("content"), "%" + kw + "%"), // 내용
-                    cb.like(u1.get("username"), "%" + kw + "%"), // 질문
-                    cb.like(a.get("content"), "%" + kw + "%"), // 답변
-                    cb.like(u2.get("username"), "%" + kw + "%")); // 답변
+                        cb.like(q.get("content"), "%" + kw + "%"), // 내용
+                        cb.like(u1.get("username"), "%" + kw + "%"), // 질문 작성자
+                        cb.like(a.get("content"), "%" + kw + "%"), // 답변 내용
+                        cb.like(u2.get("username"), "%" + kw + "%")); // 답변 작성자
             }
         };
     }
