@@ -31,4 +31,9 @@ public class OrderServiceImpl implements OrderService {
         // 단일 책임의 원칙을 잘 지킨 예
         return new Order(memberId, itemName, itemPrice, discountPrice); // 주문 만들어 반환
     }
+
+    // 테스트 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }

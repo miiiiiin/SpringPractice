@@ -6,6 +6,7 @@ import com.site.sbb.user.UserService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,8 @@ import java.util.List;
  * 스프링부트가 내부적으로 QuestionController를 생성할 때
  * 롬복으로 만들어진 생성자에 의해 questionRepository 객체가 자동으로 주입됨.
  */
+
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/question")
 @Controller
@@ -43,6 +46,8 @@ public class QuestionController {
         // Model 객체는 자바 클래스 (Java class) 와 템플릿 (template) 간의 연결 고리 역할
         // Model 객체에 값을 담아두면 템플릿에서 그 값을 사용할 수 있음.
 
+        //  log 객체를 사용하여 debug, error 등의 로그 레벨로 로그를 출력
+        log.info("page:{}, kw:{}", page, kw);
         Page<Question> paging = this.questionService.getList(page, kw);
 //        List<Question> questionList = this.questionService.getList();
         model.addAttribute("paging", paging);
@@ -75,7 +80,6 @@ public class QuestionController {
      * @param bindingResult
      * @return
      */
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {

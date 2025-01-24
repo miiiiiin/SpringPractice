@@ -21,6 +21,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 	testImplementation 'junit:junit:4.13.1'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -40,6 +41,9 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	// MARKDOWN
 	implementation 'org.commonmark:commonmark:0.21.0'
+	// DB
+	// 로컬 서버는 기존의 H2 데이터베이스를 그대로 사용하고 운영 서버만 PostgreSQL 데이터베이스를 사용
+	runtimeOnly 'org.postgresql:postgresql'
 
 }
 
